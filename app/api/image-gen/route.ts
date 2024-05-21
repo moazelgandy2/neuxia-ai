@@ -3,6 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 import Replicate from "replicate";
 import { increaseLimit, checkLimit } from "@/lib/a-limit";
 import { checkSubscription } from "@/lib/subscription";
+import db from "@/lib/db";
+
 const API = process.env.REPLICATE_API_KEY || "";
 
 const replicate = new Replicate({
@@ -11,7 +13,7 @@ const replicate = new Replicate({
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const body = await req.json();
     const { prompt, amount = 1, resolution = "512x512" } = body;
 
@@ -31,10 +33,9 @@ export async function POST(req: Request) {
       return new NextResponse("Invalid request. Resolution is required", { status: 400 });
     }
 
-    const freeTrail = await checkLimit();
     const isPro = await checkSubscription();
 
-    if (!freeTrail && !isPro) {
+    if (!isPro) {
       return new NextResponse("You have reached the free trial limit", { status: 403 });
     }
 
@@ -57,6 +58,19 @@ export async function POST(req: Request) {
     );
 
     await increaseLimit();
+
+    const imgs = Array.from(Object.values(output));
+
+    imgs.forEach(async (img) => {
+      await db.imageGen.create({
+        data: {
+          userId: userId,
+          image: img,
+          prompt: prompt,
+          resolution: resolution,
+        },
+      });
+    });
 
     return NextResponse.json(output, { status: 200 });
   } catch (e) {

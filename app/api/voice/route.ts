@@ -4,6 +4,7 @@ import { ElevenLabsClient } from "elevenlabs";
 import { createWriteStream, Dir } from "fs";
 import { checkLimit, increaseLimit } from "@/lib/a-limit";
 import { checkSubscription } from "@/lib/subscription";
+import db from "@/lib/db";
 const API = process.env.ELEVEN_LABS_API_KEY || "";
 
 const client = new ElevenLabsClient({
@@ -39,6 +40,15 @@ export async function POST(req: Request) {
     const file = await createAudioFileFromText(prompt, voice);
 
     await increaseLimit();
+
+    const formattedFile = file.replace("public", "");
+    await db.voices.create({
+      data: {
+        userId,
+        voice: formattedFile,
+        prompt,
+      },
+    });
 
     return NextResponse.json({ file }, { status: 200 });
   } catch (e) {

@@ -15,6 +15,7 @@ import { Check, Loader, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const ProModal = () => {
   const proModal = useProModal();
@@ -27,6 +28,7 @@ export const ProModal = () => {
       window.location.href = response.data.url;
     } catch (e) {
       console.error(e);
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }

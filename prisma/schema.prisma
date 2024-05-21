@@ -39,17 +39,20 @@ model Voices {
   userId    String
   user      UserApiLimit @relation(fields: [userId], references: [id])
   voice     String
+  prompt    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([userId], name: "userId")
 }
 
 model ImageGen {
-  id        String   @id @default(cuid())
-  userId    String
-  user      UserApiLimit @relation(fields: [userId], references: [id])
-  image     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  userId     String
+  user       UserApiLimit @relation(fields: [userId], references: [id])
+  image      String
+  prompt     String
+  resolution String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
   @@index([userId], name: "userId")
 }

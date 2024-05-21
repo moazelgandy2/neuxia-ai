@@ -27,6 +27,7 @@ import Image from "next/image";
 import { Download, ImageIcon } from "lucide-react";
 import useScrollbarColor from "@/hooks/useScrollbarColor";
 import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 export default function ConversationPage() {
   useScrollbarColor();
@@ -63,6 +64,8 @@ export default function ConversationPage() {
     } catch (e: any) {
       if (e?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       console.error("[IMAGE_GEN_ERROR]", e);
     }

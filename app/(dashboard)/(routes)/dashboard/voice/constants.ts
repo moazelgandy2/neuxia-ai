@@ -2,10 +2,7 @@ import axios from "axios";
 import * as z from "zod";
 
 export const formSchema = z.object({
-  prompt: z
-    .string()
-    .min(1, { message: "Image prompt is required" })
-    .max(300, { message: "Image Prompt is too long" }),
+  prompt: z.string().min(1, { message: "Image prompt is required" }),
   voice: z.string().min(1, { message: "Voice is required" }),
 });
 

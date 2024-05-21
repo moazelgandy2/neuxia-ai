@@ -22,6 +22,7 @@ import { BotAvatar } from "@/components/bot-avatar";
 import ReactMarkDown from "react-markdown";
 import useScrollbarColor from "@/hooks/useScrollbarColor";
 import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 export default function ConversationPage() {
   useScrollbarColor();
@@ -52,6 +53,8 @@ export default function ConversationPage() {
     } catch (e: any) {
       if (e?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       console.error("[CODE_GEN]", e);
     }

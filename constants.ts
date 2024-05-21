@@ -12,6 +12,14 @@ export const tools = [
     isPro: false,
   },
   {
+    label: "Image to Text",
+    icon: ScanSearch,
+    color: "text-blue-600",
+    bgColor: "bg-blue-600/10",
+    href: "/dashboard/image",
+    isPro: true,
+  },
+  {
     label: "Text to Speech",
     icon: SpeechIcon,
     color: "text-green-600",
@@ -28,14 +36,6 @@ export const tools = [
     isPro: false,
   },
   {
-    label: "Image to Text",
-    icon: ScanSearch,
-    color: "text-blue-600",
-    bgColor: "bg-blue-600/10",
-    href: "/dashboard/image",
-    isPro: false,
-  },
-  {
     label: "Image Generation",
     icon: ImageIcon,
     color: "text-pink-600",
@@ -49,6 +49,6 @@ export const tools = [
     color: "text-red-600",
     bgColor: "bg-red-600/10",
     href: "/dashboard/video",
-    isPro: false,
+    isPro: true,
   },
 ];

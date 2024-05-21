@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { Zap } from "lucide-react";
+import { Settings, Zap } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const SubscriptionButton = ({ isPro = false }: { isPro: boolean }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,15 +16,21 @@ export const SubscriptionButton = ({ isPro = false }: { isPro: boolean }) => {
       window.location.href = res.data.url;
     } catch (e) {
       console.error("SETTINGS_PAGE_ERROR", e);
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
   };
   return (
     <>
-      <Button disabled={isLoading} variant={isPro ? "default" : "premium"} onClick={onClick}>
-        {isPro ? "Manage Subscription" : "Upgrade"}
-        {!isPro && <Zap className="ml-2 w-4 h-4 fill-white" />}
+      <Button
+        disabled={isLoading}
+        variant={isPro ? "default" : "premium"}
+        className="flex justify-center items-center"
+        onClick={onClick}
+      >
+        Manage Subscription
+        <Settings className="w-4 h-4 ml-2" />
       </Button>
     </>
   );

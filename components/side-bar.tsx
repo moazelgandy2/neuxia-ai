@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 import {
   Code,
+  FileStackIcon,
   ImageIcon,
   LayoutDashboard,
   MessageSquare,
@@ -17,6 +18,9 @@ import {
 } from "lucide-react";
 import { Montserrat } from "next/font/google";
 import { CreditCounter } from "./credit-counter";
+import { useProModal } from "@/hooks/use-pro-modal";
+import { Button } from "./ui/button";
+import { SubscriptionButton } from "./subscription-button";
 
 const montserrat = Montserrat({
   weight: "600",
@@ -57,20 +61,20 @@ const routes = [
     isPro: false,
   },
   {
-    label: "Image to Text",
-    icon: ScanSearch,
-    href: "/dashboard/image",
-    color: "text-blue-500",
-    disabled: true,
-    isPro: false,
-  },
-  {
     label: "Image Generation",
     icon: ImageIcon,
     href: "/dashboard/image-gen",
     color: "text-pink-500",
     disabled: false,
     isPro: true,
+  },
+  {
+    label: "Image to Text",
+    icon: ScanSearch,
+    href: "/dashboard/image",
+    color: "text-blue-500",
+    disabled: true,
+    isPro: false,
   },
   {
     label: "Video Generation",
@@ -81,9 +85,9 @@ const routes = [
     isPro: false,
   },
   {
-    label: "Settings",
-    icon: Settings,
-    href: "/dashboard/settings",
+    label: "Library",
+    icon: FileStackIcon,
+    href: "/dashboard/library",
     disabled: false,
     isPro: false,
   },
@@ -91,6 +95,7 @@ const routes = [
 
 const SideBar = ({ limit = 0, isPro = false }: { limit: number; isPro: boolean }) => {
   const pathName = usePathname();
+  const proModal = useProModal();
 
   return (
     <div className="space-y-4 py-4 flex flex-col justify-between h-screen bg-[#111827] text-white">
@@ -106,34 +111,56 @@ const SideBar = ({ limit = 0, isPro = false }: { limit: number; isPro: boolean }
           </div>
         </Link>
         <div className="space-y-1">
-          {routes.map((route, i) => (
-            <Link
-              key={i}
-              href={route.href}
-              className={cn(
-                "text-sm group flex p-3 relative w-full items-center justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 transition rounded-lg",
-                pathName === route.href ? "text-white bg-white/10" : "text-zinc-400"
-              )}
-            >
-              <div className="flex items-center flex-1">
-                <route.icon className={cn("w-5 h-5 mr-3", route.color)} />
-                {route.label}
-              </div>
-              {route.disabled && (
-                <div className="bg-gradient-to-r from-blue-300 to-indigo-400 text-white rounded-lg absolute right-2 p-1 text-sm">
-                  <p>Soon</p>
+          {routes.map((route, i) =>
+            route.isPro && !isPro ? (
+              <Button
+                key={i}
+                onClick={proModal.onOpen}
+                variant={"ghost"}
+                className={cn(
+                  "text-sm group flex p-3 relative w-full items-center justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 transition rounded-lg",
+                  pathName === route.href ? "text-white bg-white/10" : "text-zinc-400"
+                )}
+              >
+                <div className="flex items-center flex-1">
+                  <route.icon className={cn("w-5 h-5 mr-3", route.color)} />
+                  {route.label}
                 </div>
-              )}
-              {route.isPro && !isPro && (
-                <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg absolute right-2 p-1 text-sm">
-                  <p>PRO</p>
+                {route.isPro && !isPro && (
+                  <div className="bg-gradient-to-r h-6 w-12 flex items-center justify-center from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg absolute right-2 p-1 text-sm">
+                    <p>PRO</p>
+                  </div>
+                )}
+              </Button>
+            ) : (
+              <Link
+                key={i}
+                href={route.href}
+                className={cn(
+                  "text-sm group flex p-3 relative w-full items-center justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 transition rounded-lg",
+                  pathName === route.href ? "text-white bg-white/10" : "text-zinc-400"
+                )}
+              >
+                <div className="flex items-center flex-1">
+                  <route.icon className={cn("w-5 h-5 mr-3", route.color)} />
+                  {route.label}
                 </div>
-              )}
-            </Link>
-          ))}
+                {route.disabled && (
+                  <div className="bg-gradient-to-r h-6 flex items-center justify-center w-12 from-blue-300 to-indigo-400 text-white rounded-lg absolute right-2 text-sm">
+                    <p>Soon</p>
+                  </div>
+                )}
+              </Link>
+            )
+          )}
         </div>
       </div>
       <CreditCounter limit={limit} isPro={isPro} />
+      {isPro && (
+        <div className="flex justify-center">
+          <SubscriptionButton isPro={isPro} />
+        </div>
+      )}
     </div>
   );
 };

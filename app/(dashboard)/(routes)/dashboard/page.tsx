@@ -9,11 +9,23 @@ import useScrollbarColor from "@/hooks/useScrollbarColor";
 
 import { tools } from "@/constants";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 function DashboardPage() {
   const router = useRouter();
+  const proModal = useProModal();
   const [isPro, setIsPro] = useState(false);
+
+  const checkSubscription = async () => {
+    const res = await axios.get("/api/checkSub");
+    setIsPro(res.data);
+  };
+
+  useEffect(() => {
+    checkSubscription();
+  }, []);
 
   useScrollbarColor();
   return (
@@ -28,7 +40,10 @@ function DashboardPage() {
         {tools.map((tool, i) => (
           <Card
             onClick={() => {
-              if (tool.isPro && !isPro) return;
+              if (tool.isPro && !isPro) {
+                proModal.onOpen();
+                return null;
+              }
               router.push(tool.href);
             }}
             key={i}
@@ -42,7 +57,7 @@ function DashboardPage() {
                 <h3 className="font-semibold">{tool.label}</h3>
               </div>
             </div>
-            {tool.isPro ? (
+            {tool.isPro && !isPro ? (
               <Badge variant={"premium"} className="px-2">
                 PRO
               </Badge>

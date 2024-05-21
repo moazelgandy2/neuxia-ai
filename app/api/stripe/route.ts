@@ -5,7 +5,7 @@ import db from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
 
-const settingsUrl = absoluteUrl("/dashboard/settings");
+const settingsUrl = absoluteUrl("/dashboard");
 
 export async function GET() {
   try {
