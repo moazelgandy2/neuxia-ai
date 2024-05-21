@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { ElevenLabsClient } from "elevenlabs";
-import { createWriteStream, Dir } from "fs";
+import { createWriteStream } from "fs";
 import { checkLimit, increaseLimit } from "@/lib/a-limit";
 import { checkSubscription } from "@/lib/subscription";
 import db from "@/lib/db";
@@ -30,10 +30,10 @@ export async function POST(req: Request) {
       return new NextResponse("Invalid request. Voice is required", { status: 400 });
     }
 
-    const freeTrail = await checkLimit();
+    const freeTrial = await checkLimit();
     const isPro = await checkSubscription();
 
-    if (!freeTrail && !isPro) {
+    if (!freeTrial && !isPro) {
       return new NextResponse("You have reached the free trial limit", { status: 403 });
     }
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
   }
 }
 
-export const createAudioFileFromText = async (text: string, voice: string): Promise<string> => {
+async function createAudioFileFromText(text: string, voice: string): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
       const audio = await client.generate({
@@ -75,4 +75,4 @@ export const createAudioFileFromText = async (text: string, voice: string): Prom
       reject(error);
     }
   });
-};
+}
