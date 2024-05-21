@@ -53,34 +53,34 @@ export const ImagesLibrary = ({ imgs, isPro }: GeneratedImagesProps) => {
               </Card>
             ))}
         </div>
-        {imgs.length === 0 ||
-          (!isPro && (
-            <div className="w-full flex flex-col items-center justify-center ">
-              {isPro && (
-                <>
-                  <div className="text-muted-foreground text-sm">
-                    You have not generated any images yet. Start generating images by clicking the
-                    button below.
-                  </div>
-                  <Link href="/dashboard/image-gen">
-                    <Button className="mt-4">Generate Images</Button>
-                  </Link>
-                </>
-              )}
-              {!isPro && (
-                <>
-                  <div className="text-muted-foreground text-sm">
-                    You are not subscribed to the Pro plan. Subscribe to the Pro plan to start
-                    generating images.
-                  </div>
-                  <Button variant={"premium"} className="mt-4" onClick={() => proModal.onOpen()}>
-                    Subscribe to Pro
-                    <Zap className="ml-2 w-4 h-4 fill-white" />
-                  </Button>
-                </>
-              )}
+        {imgs.length === 0 && isPro && (
+          <div className="w-full flex flex-col items-center justify-center ">
+            <>
+              <div className="text-muted-foreground text-sm">
+                You have not generated any images yet. Start generating images by clicking the
+                button below.
+              </div>
+              <Link href="/dashboard/image-gen">
+                <Button className="mt-4">Generate Images</Button>
+              </Link>
+            </>
+          </div>
+        )}
+
+        {!isPro && (
+          <>
+            <div className="flex w-ful flex-col justify-center items-center">
+              <div className="text-muted-foreground text-sm">
+                You are not subscribed to the Pro plan. Subscribe to the Pro plan to start
+                generating images.
+              </div>
+              <Button variant={"premium"} className="mt-4" onClick={() => proModal.onOpen()}>
+                Subscribe to Pro
+                <Zap className="ml-2 w-4 h-4 fill-white" />
+              </Button>
             </div>
-          ))}
+          </>
+        )}
       </div>
     </>
   );
