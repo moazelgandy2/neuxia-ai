@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { tools } from "@/constants";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Check, Loader, Zap } from "lucide-react";
+import { Check, Database, Loader, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
@@ -47,7 +47,7 @@ export const ProModal = () => {
                 </Badge>
               </div>
             </DialogTitle>
-            <DialogDescription className="text-center pt-2 space-y-2 text-zinc-500 font-medium">
+            <DialogDescription className="text-center pt-2 space-y-1 text-zinc-500 font-medium">
               {tools.map((tool, i) => (
                 <Card key={i} className="p-3 border-black/5 flex items-center justify-between">
                   <div className="flex items-center gap-x-4">
@@ -59,6 +59,15 @@ export const ProModal = () => {
                   <Check className=" text-primary w-5 h-5" />
                 </Card>
               ))}
+              <Card className="p-3 border-black/5 w-full flex items-center justify-between">
+                <div className="flex items-center gap-x-4">
+                  <div className={cn("p-2 w-fit rounded-md")}>
+                    <Database className={cn("w-6 h-6 text-violet-500")} />
+                  </div>
+                  <div className="font-semibold text-sm">Keep generations</div>
+                </div>
+                <Check className=" text-primary w-5 h-5" />
+              </Card>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
