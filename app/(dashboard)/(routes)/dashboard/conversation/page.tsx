@@ -13,19 +13,18 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/heading";
 import { formSchema } from "./constants";
 
-import "../../../../globals.css";
-
 import { MessageSquare } from "lucide-react";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
-import useScrollbarColor from "@/lib/useScrollbarColor";
+import useScrollbarColor from "@/hooks/useScrollbarColor";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 export default function ConversationPage() {
   useScrollbarColor();
-
+  const proModal = useProModal();
   const router = useRouter();
   const [messages, setMessages] = useState<any>([]); // Manage conversation history state
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,7 +49,10 @@ export default function ConversationPage() {
       form.reset();
       router.refresh();
     } catch (e: any) {
-      console.error("[GEMINI_TEXT_ERROR_API]", e);
+      if (e?.response?.status === 403) {
+        proModal.onOpen();
+      }
+      console.error("[CONVERSATION_ERROR]", e);
     }
   };
 

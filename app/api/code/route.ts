@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { checkLimit, increaseLimit } from "@/lib/a-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
@@ -29,6 +31,13 @@ export async function POST(req: Request) {
       return new NextResponse("Invalid request. Prompt is required", { status: 400 });
     }
 
+    const freeTrail = await checkLimit();
+    const isPro = await checkSubscription();
+
+    if (!freeTrail && !isPro) {
+      return new NextResponse("You have reached the free trial limit", { status: 403 });
+    }
+
     const data = []; // Array to store conversation turns
 
     const fullPrompt = buildFullPrompt(conversationHistory, prompt); // Build full prompt with context
@@ -44,6 +53,8 @@ export async function POST(req: Request) {
     data.push({ text, safetyRatings, role: "ai" });
 
     conversationHistory.push({ role: "ai", message: text }); // Add AI response to history
+
+    await increaseLimit();
 
     return NextResponse.json(data, { status: 200 });
   } catch (e) {

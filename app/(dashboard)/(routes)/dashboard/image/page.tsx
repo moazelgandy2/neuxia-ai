@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import useScrollbarColor from "@/lib/useScrollbarColor";
+import useScrollbarColor from "@/hooks/useScrollbarColor";
 
 import axios from "axios";
 import * as z from "zod";

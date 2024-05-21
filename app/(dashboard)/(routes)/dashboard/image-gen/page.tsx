@@ -25,10 +25,12 @@ import {
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Download, ImageIcon } from "lucide-react";
-import useScrollbarColor from "@/lib/useScrollbarColor";
+import useScrollbarColor from "@/hooks/useScrollbarColor";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 export default function ConversationPage() {
   useScrollbarColor();
+  const proModal = useProModal();
   const router = useRouter();
   const [images, setImages] = useState<any>([]);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,7 +61,10 @@ export default function ConversationPage() {
       form.reset();
       router.refresh();
     } catch (e: any) {
-      console.error("[GEMINI_TEXT_ERROR_API]", e);
+      if (e?.response?.status === 403) {
+        proModal.onOpen();
+      }
+      console.error("[IMAGE_GEN_ERROR]", e);
     }
   };
 

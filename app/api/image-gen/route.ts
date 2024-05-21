@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import Replicate from "replicate";
-
+import { increaseLimit, checkLimit } from "@/lib/a-limit";
+import { checkSubscription } from "@/lib/subscription";
 const API = process.env.REPLICATE_API_KEY || "";
 
 const replicate = new Replicate({
@@ -30,6 +31,13 @@ export async function POST(req: Request) {
       return new NextResponse("Invalid request. Resolution is required", { status: 400 });
     }
 
+    const freeTrail = await checkLimit();
+    const isPro = await checkSubscription();
+
+    if (!freeTrail && !isPro) {
+      return new NextResponse("You have reached the free trial limit", { status: 403 });
+    }
+
     console.log("[GEMINI_TEXT_REQUEST]", { prompt, amount, resolution });
 
     const output = await replicate.run(
@@ -47,6 +55,8 @@ export async function POST(req: Request) {
         },
       }
     );
+
+    await increaseLimit();
 
     return NextResponse.json(output, { status: 200 });
   } catch (e) {

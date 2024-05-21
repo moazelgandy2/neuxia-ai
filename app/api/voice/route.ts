@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { ElevenLabsClient } from "elevenlabs";
 import { createWriteStream, Dir } from "fs";
-
+import { checkLimit, increaseLimit } from "@/lib/a-limit";
+import { checkSubscription } from "@/lib/subscription";
 const API = process.env.ELEVEN_LABS_API_KEY || "";
 
 const client = new ElevenLabsClient({
@@ -27,7 +28,18 @@ export async function POST(req: Request) {
     if (!voice) {
       return new NextResponse("Invalid request. Voice is required", { status: 400 });
     }
+
+    const freeTrail = await checkLimit();
+    const isPro = await checkSubscription();
+
+    if (!freeTrail && !isPro) {
+      return new NextResponse("You have reached the free trial limit", { status: 403 });
+    }
+
     const file = await createAudioFileFromText(prompt, voice);
+
+    await increaseLimit();
+
     return NextResponse.json({ file }, { status: 200 });
   } catch (e) {
     console.error("[GEMINI_TEXT_ERROR_API]", e);
