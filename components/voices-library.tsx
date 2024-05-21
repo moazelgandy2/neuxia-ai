@@ -50,7 +50,7 @@ export const VoicesLibrary = ({ voices, isPro }: GeneratedImagesProps) => {
                 You have not generated any images yet. Start generating voices by clicking the
                 button below.
               </div>
-              <Link href="/dashboard/image-gen">
+              <Link href="/dashboard/voice">
                 <Button className="mt-4">Generate Voices</Button>
               </Link>
             </div>
