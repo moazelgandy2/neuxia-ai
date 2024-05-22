@@ -2,14 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { MAX_FREE_COUNT } from "@/constants";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 
-export const CreditCounter = ({ limit, isPro }: { limit: number; isPro: boolean }) => {
+export const CreditCounter = ({
+  limit,
+  isPro,
+  maxCount,
+}: {
+  limit: number;
+  isPro: boolean;
+  maxCount: number;
+}) => {
   const [mounted, setMounted] = useState(false);
+  const MAX_FREE_COUNT = maxCount;
   const proModal = useProModal();
 
   useEffect(() => {

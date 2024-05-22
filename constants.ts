@@ -1,7 +1,5 @@
 import { Code, ImageIcon, MessageSquare, ScanSearch, SpeechIcon, VideoIcon } from "lucide-react";
 
-export const MAX_FREE_COUNT = 5;
-
 export const tools = [
   {
     label: "Conversation",

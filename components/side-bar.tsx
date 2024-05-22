@@ -93,7 +93,15 @@ const routes = [
   },
 ];
 
-const SideBar = ({ limit = 0, isPro = false }: { limit: number; isPro: boolean }) => {
+const SideBar = ({
+  limit = 0,
+  isPro = false,
+  maxCount,
+}: {
+  limit: number;
+  isPro: boolean;
+  maxCount: number;
+}) => {
   const pathName = usePathname();
   const proModal = useProModal();
 
@@ -155,7 +163,7 @@ const SideBar = ({ limit = 0, isPro = false }: { limit: number; isPro: boolean }
           )}
         </div>
       </div>
-      <CreditCounter limit={limit} isPro={isPro} />
+      <CreditCounter limit={limit} isPro={isPro} maxCount={maxCount} />
       {isPro && (
         <div className="flex justify-center">
           <SubscriptionButton isPro={isPro} />

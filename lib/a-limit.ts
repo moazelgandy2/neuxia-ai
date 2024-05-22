@@ -1,6 +1,24 @@
 import { auth } from "@clerk/nextjs/server";
 import db from "@/lib/db";
-import { MAX_FREE_COUNT } from "@/constants";
+
+export const getMaxCount = async () => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return 0;
+  }
+
+  const res = await db.userApiLimit.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      maxCount: true,
+    },
+  });
+
+  return res?.maxCount || 5;
+};
 
 export const increaseLimit = async () => {
   const { userId } = await auth();
@@ -33,6 +51,7 @@ export const increaseLimit = async () => {
     });
   }
 };
+
 export const checkLimit = async () => {
   const { userId } = await auth();
 
@@ -46,12 +65,14 @@ export const checkLimit = async () => {
     },
   });
 
+  const MAX_FREE_COUNT = await getMaxCount();
   if (!userLimit || userLimit.count < MAX_FREE_COUNT) {
     return true;
   } else {
     return false;
   }
 };
+
 export const getLimitCount = async () => {
   const { userId } = await auth();
 
