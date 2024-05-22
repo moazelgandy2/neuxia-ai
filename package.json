@@ -23,10 +23,12 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
     "axios": "^1.6.8",
+    "backblaze-b2": "^1.7.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "crisp-sdk-web": "^1.0.25",
     "elevenlabs": "^0.5.0",
+    "firebase": "^10.12.1",
     "lucide-react": "^0.378.0",
     "next": "14.2.3",
     "react": "^18",
@@ -45,6 +47,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/backblaze-b2": "^1.5.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

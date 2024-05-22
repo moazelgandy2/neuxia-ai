@@ -52,8 +52,8 @@ export default function ConversationPage() {
         prompt: values.prompt,
         voice: values.voice,
       });
-      const formattedPath = response.data.file.replace("public", "");
-      setAudio(formattedPath);
+
+      setAudio(response.data.fileURL);
       form.reset();
       router.refresh();
     } catch (e: any) {

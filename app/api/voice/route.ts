@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { ElevenLabsClient } from "elevenlabs";
-import { createWriteStream } from "fs";
 import { checkLimit, increaseLimit } from "@/lib/a-limit";
 import { checkSubscription } from "@/lib/subscription";
 import db from "@/lib/db";
-const API = process.env.ELEVEN_LABS_API_KEY || "";
 
+import { storage } from "@/lib/firebase";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+
+const API = process.env.ELEVEN_LABS_API_KEY || "";
 const client = new ElevenLabsClient({
   apiKey: API,
 });
@@ -37,20 +39,19 @@ export async function POST(req: Request) {
       return new NextResponse("You have reached the free trial limit", { status: 403 });
     }
 
-    const file = await createAudioFileFromText(prompt, voice);
-
+    const fileURL = await createAudioFileFromText(prompt, voice);
+    console.log("File URL: ", fileURL);
     await increaseLimit();
 
-    const formattedFile = file.replace("public", "");
     await db.voices.create({
       data: {
         userId,
-        voice: formattedFile,
+        voice: fileURL,
         prompt,
       },
     });
-
-    return NextResponse.json({ file }, { status: 200 });
+    console.log("Voice saved to database");
+    return NextResponse.json({ fileURL }, { status: 200 });
   } catch (e) {
     console.error("[GEMINI_TEXT_ERROR_API]", e);
     return new NextResponse("Internal server error", { status: 500 });
@@ -60,17 +61,39 @@ export async function POST(req: Request) {
 async function createAudioFileFromText(text: string, voice: string): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
-      const audio = await client.generate({
+      const audio: any = await client.generate({
         voice: voice,
         model_id: "eleven_turbo_v2",
         text,
       });
-      const fileName = `public/audio/${Math.random()}.mp3`;
-      const fileStream = createWriteStream(fileName);
 
-      audio.pipe(fileStream);
-      fileStream.on("finish", () => resolve(fileName)); // Resolve with the fileName
-      fileStream.on("error", reject);
+      let audioData: Uint8Array[] = [];
+
+      audio.on("data", (chunk: Uint8Array) => {
+        audioData.push(chunk);
+      });
+
+      audio.on("end", async () => {
+        // Concatenate audio data
+        const concatenatedAudioData = Buffer.concat(audioData);
+
+        // Encode audio data to base64
+        const base64String = concatenatedAudioData.toString("base64");
+
+        // Upload base64 string to Firebase Storage
+        try {
+          const fileRef = ref(storage, `${Math.random()}.mp3`);
+          await uploadString(fileRef, base64String, "base64", {
+            contentType: "audio/mpeg",
+          });
+
+          const downloadURL = await getDownloadURL(fileRef);
+          console.log("Download URL: ", downloadURL);
+          resolve(downloadURL);
+        } catch (error) {
+          reject(error);
+        }
+      });
     } catch (error) {
       reject(error);
     }
