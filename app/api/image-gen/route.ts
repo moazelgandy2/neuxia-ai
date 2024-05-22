@@ -58,15 +58,19 @@ export async function POST(req: Request) {
     const imgs = Array.from(Object.values(output));
 
     for (const img of imgs) {
-      await db.imageGen.create({
-        data: {
-          userId: userId,
-          image: img,
-          prompt: prompt,
-          resolution: resolution,
-        },
-      });
-      console.log("[IMAGE_CREATED]", img);
+      try {
+        await db.imageGen.create({
+          data: {
+            userId: userId,
+            image: img,
+            prompt: prompt,
+            resolution: resolution,
+          },
+        });
+        console.log("[IMAGE_CREATED]", img);
+      } catch (e) {
+        console.error("[IMAGE_CREATE_ERROR]", e);
+      }
     }
 
     await increaseLimit();
