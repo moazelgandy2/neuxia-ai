@@ -40,24 +40,27 @@ export async function POST(req: Request) {
     }
 
     console.log("[GEMINI_TEXT_REQUEST]", { prompt, amount, resolution });
+    console.log("[API]", API);
 
     const output = await replicate.run(
-      "stability-ai/stable-diffusion:ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
+      "bytedance/sdxl-lightning-4step:5f24084160c9089501c1b3545d9be3c27883ae2239b6f412990e82d4a6210f8f",
       {
         input: {
           width: parseInt(resolution.split("x")[0], 10),
           height: parseInt(resolution.split("x")[1], 10),
           prompt: prompt,
-          scheduler: "K_EULER_ANCESTRAL",
+          scheduler: "K_EULER",
           num_outputs: parseInt(amount, 10),
-          guidance_scale: 7.5,
-          negative_prompt: "low quality",
-          num_inference_steps: 50,
+          guidance_scale: 0,
+          negative_prompt: "worst quality, low quality",
+          num_inference_steps: 4,
         },
       }
     );
 
     await increaseLimit();
+
+    // width: parseInt(resolution.split("x")[0], 10),
 
     const imgs = Array.from(Object.values(output));
 
