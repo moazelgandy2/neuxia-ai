@@ -60,8 +60,6 @@ export async function POST(req: Request) {
 
     await increaseLimit();
 
-    // width: parseInt(resolution.split("x")[0], 10),
-
     const imgs = Array.from(Object.values(output));
 
     imgs.forEach(async (img) => {
@@ -73,6 +71,7 @@ export async function POST(req: Request) {
           resolution: resolution,
         },
       });
+      console.log("[IMAGE_CREATED]", img);
     });
 
     return NextResponse.json(output, { status: 200 });

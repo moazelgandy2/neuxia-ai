@@ -40,7 +40,6 @@ export async function POST(req: Request) {
     }
 
     const fileURL = await createAudioFileFromText(prompt, voice);
-    console.log("File URL: ", fileURL);
     await increaseLimit();
 
     await db.voices.create({
