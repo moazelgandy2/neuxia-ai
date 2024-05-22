@@ -39,9 +39,6 @@ export async function POST(req: Request) {
       return new NextResponse("You have reached the free trial limit", { status: 403 });
     }
 
-    console.log("[GEMINI_TEXT_REQUEST]", { prompt, amount, resolution });
-    console.log("[API]", API);
-
     const output = await replicate.run(
       "bytedance/sdxl-lightning-4step:5f24084160c9089501c1b3545d9be3c27883ae2239b6f412990e82d4a6210f8f",
       {
@@ -58,11 +55,9 @@ export async function POST(req: Request) {
       }
     );
 
-    await increaseLimit();
-
     const imgs = Array.from(Object.values(output));
 
-    imgs.forEach(async (img) => {
+    for (const img of imgs) {
       await db.imageGen.create({
         data: {
           userId: userId,
@@ -72,7 +67,9 @@ export async function POST(req: Request) {
         },
       });
       console.log("[IMAGE_CREATED]", img);
-    });
+    }
+
+    await increaseLimit();
 
     return NextResponse.json(output, { status: 200 });
   } catch (e) {
