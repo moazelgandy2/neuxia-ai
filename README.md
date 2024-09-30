@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 Neuxia - AI SaaS Platform
 
-## Getting Started
+**Neuxia** is an advanced AI SaaS platform built with Next.js and React, integrating cutting-edge AI models for conversational AI, code generation, text-to-speech, and image generation. The platform is designed for performance and scalability, achieving **100%** performance and SEO optimization while providing secure authentication and robust database management.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 💬 **Conversational AI**: AI-powered chatbots that provide real-time interactions.
+- 🖥️ **Code Generation**: Generate code snippets using AI, streamlining development.
+- 🗣️ **Text-to-Speech**: High-quality text-to-speech conversion for voice-driven applications.
+- 🎨 **Image Generation**: Generate images using advanced AI models.
+- 🔒 **Authentication**: User authentication is secured using Clerk.
+- 🗄️ **Database Management**: MySQL managed with Prisma ORM.
+- ☁️ **File Storage**: Integrated with Firebase Storage for seamless file handling.
+- ⚡ **Performance Optimization**: Achieved 100% performance and SEO optimization.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js**: For server-side rendering and performance optimizations.
+- **React**: For building responsive user interfaces.
+- **TypeScript**: For type safety and better development experience.
+- **Clerk**: For secure user authentication.
+- **MySQL & Prisma**: For efficient database management.
+- **Firebase Storage**: For secure and scalable file storage.
+- **Vercel**: For deploying the platform with high scalability.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🚀 Installation
 
-## Learn More
+1. Clone the repository:
+   ```bash
+    git clone https://github.com/moazelgandy2/neuxia-ai.git
+   ```
+2. Install dependencies
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+    npm install
+    or
+    yarn install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Set up your environment variables by renaming the `.env.example` file to `.env`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```bash
+   mv .env.example .env
+   ```
 
-## Deploy on Vercel
+4. Run the development server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+     npm run dev
+     OR
+     yarn run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🚀 Usage
+
+Once the development server is running, you can access the app at `http://localhost:3000`. Explore the various features, including AI-powered interactions, code generation, and image creation.
+
+## ⚙️ Environment Variables
+
+| Variable Name                         | Description                                 |
+| ------------------------------------- | ------------------------------------------- |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`   | Clerk publishable API key for public use    |
+| `CLERK_SECRET_KEY`                    | Clerk secret key for server-side operations |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`       | URL for the sign-in page                    |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`       | URL for the sign-up page                    |
+| `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | Redirect URL after successful sign-in       |
+| `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | Redirect URL after successful sign-up       |
+| `GEMINI_API_KEY`                      | API key for the Gemini service              |
+| `REPLICATE_API_KEY`                   | API key for the Replicate service           |
+| `ELEVEN_LABS_API_KEY`                 | API key for Eleven Labs (text-to-speech)    |
+| `DATABASE_URL`                        | URL for connecting to the database          |
+| `STRIP_API_SECRET_KEY`                | Stripe secret key for handling payments     |
+| `NEXT_PUBLIC_APP_URL`                 | Publicly accessible URL of the application  |
+| `STRIPE_WEBHOOK_SECRET`               | Secret key for verifying Stripe webhooks    |
+| `FIREBASE_API_KEY`                    | Firebase API key                            |
+| `FIREBASE_AUTH_DOMAIN`                | Firebase authentication domain              |
+| `FIREBASE_PROJECT_ID`                 | Firebase project ID                         |
+| `FIREBASE_STORAGE_BUCKET`             | Firebase storage bucket for file handling   |
+| `FIREBASE_MESSAGING_SENDER_ID`        | Firebase messaging sender ID                |
+| `FIREBASE_APP_ID`                     | Firebase app ID                             |
+| `FIREBASE_MEASUREMENT_ID`             | Firebase measurement ID for analytics       |
