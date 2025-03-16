@@ -48,6 +48,8 @@ export default function ConversationPage() {
     try {
       setAudio(undefined);
 
+      throw new Error("Sorry, this feature is out of service");
+
       const response = await axios.post("/api/voice", {
         prompt: values.prompt,
         voice: values.voice,
@@ -59,8 +61,11 @@ export default function ConversationPage() {
     } catch (e: any) {
       if (e?.response?.status === 403) {
         proModal.onOpen();
+      } else if (e?.response?.status === 503) {
+        console.error("[VOICE_GEN_ERROR]", e);
+        toast.error("Service Temporarily Unavailable");
       } else {
-        toast.error("Something went wrong");
+        toast.error("Service Temporarily Unavailable");
       }
       console.error("[VOICE_GEN_ERROR]", e);
     }
@@ -117,7 +122,10 @@ export default function ConversationPage() {
                         </FormControl>
                         <SelectContent>
                           {voices.map((option, i) => (
-                            <SelectItem key={i} value={option.value}>
+                            <SelectItem
+                              key={i}
+                              value={option.value}
+                            >
                               {option.label}
                             </SelectItem>
                           ))}
@@ -126,7 +134,10 @@ export default function ConversationPage() {
                     </FormItem>
                   )}
                 />
-                <Button className="col-span-12 lg:col-span-2 w-full" disabled={isLoading}>
+                <Button
+                  className="col-span-12 lg:col-span-2 w-full"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Loading...." : "Generate"}
                 </Button>
               </form>
@@ -137,18 +148,30 @@ export default function ConversationPage() {
               {isLoading && (
                 <>
                   <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
-                    <Loader loaderImage={"/loader-voice.svg"} animation="animate-bounce" />
+                    <Loader
+                      loaderImage={"/loader-voice.svg"}
+                      animation="animate-bounce"
+                    />
                   </div>
                 </>
               )}
               {!audio && !isLoading && (
                 <div className="h-[60vh]">
-                  <Empty label="No audio generated yet" emptyImage="/voice.svg" />
+                  <Empty
+                    label="No audio generated yet"
+                    emptyImage="/voice.svg"
+                  />
                 </div>
               )}
             </div>
             <div className="w-full h-full flex items-center justify-center">
-              {audio && <audio className="w-full mt-8" controls src={`${audio}`} />}
+              {audio && (
+                <audio
+                  className="w-full mt-8"
+                  controls
+                  src={`${audio}`}
+                />
+              )}
             </div>
           </div>
         </div>

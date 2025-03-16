@@ -22,21 +22,32 @@ export async function POST(req: Request) {
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    return new NextResponse("Service Temporarily Unavailable", { status: 503 });
+
     if (!API) {
-      return new NextResponse("Eleven Labs API key not configured", { status: 500 });
+      return new NextResponse("Eleven Labs API key not configured", {
+        status: 500,
+      });
     }
     if (!prompt) {
-      return new NextResponse("Invalid request. Prompt is required", { status: 400 });
+      return new NextResponse("Invalid request. Prompt is required", {
+        status: 400,
+      });
     }
     if (!voice) {
-      return new NextResponse("Invalid request. Voice is required", { status: 400 });
+      return new NextResponse("Invalid request. Voice is required", {
+        status: 400,
+      });
     }
 
     const freeTrial = await checkLimit();
     const isPro = await checkSubscription();
 
     if (!freeTrial && !isPro) {
-      return new NextResponse("You have reached the free trial limit", { status: 403 });
+      return new NextResponse("You have reached the free trial limit", {
+        status: 403,
+      });
     }
 
     const fileURL = await createAudioFileFromText(prompt, voice);
@@ -44,7 +55,7 @@ export async function POST(req: Request) {
 
     await db.voices.create({
       data: {
-        userId,
+        userId: userId as any,
         voice: fileURL,
         prompt,
       },
@@ -57,7 +68,10 @@ export async function POST(req: Request) {
   }
 }
 
-async function createAudioFileFromText(text: string, voice: string): Promise<string> {
+async function createAudioFileFromText(
+  text: string,
+  voice: string
+): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
       const audio: any = await client.generate({

@@ -66,6 +66,7 @@ export const checkLimit = async () => {
   });
 
   const MAX_FREE_COUNT = await getMaxCount();
+
   if (!userLimit || userLimit.count < MAX_FREE_COUNT) {
     return true;
   } else {
