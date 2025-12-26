@@ -1,81 +1,96 @@
-# 🚀 Neuxia - AI SaaS Platform
+# 🚀 Neuxia - Multi-Modal AI Gateway & SaaS Platform
 
-**Neuxia** is an advanced AI SaaS platform built with Next.js and React, integrating cutting-edge AI models for conversational AI, code generation, text-to-speech, and image generation. The platform is designed for performance and scalability, achieving **100%** performance and SEO optimization while providing secure authentication and robust database management.
+![Neuxia Banner](public/logo.png) **Neuxia** is a comprehensive AI SaaS platform that unifies multiple generative models (Gemini, Replicate, ElevenLabs) into a single interface. Built with **Next.js 16**, it features a robust **credit-based economy**, tiered subscriptions via **Stripe**, and a fully responsive, optimized UI.
 
-## ✨ Features
+Unlike simple API wrappers, Neuxia implements a secure gateway pattern to handle rate limiting, credit deduction (atomic transactions), and multi-provider orchestration.
 
-- 💬 **Conversational AI**: AI-powered chatbots that provide real-time interactions.
-- 🖥️ **Code Generation**: Generate code snippets using AI, streamlining development.
-- 🗣️ **Text-to-Speech**: High-quality text-to-speech conversion for voice-driven applications.
-- 🎨 **Image Generation**: Generate images using advanced AI models.
-- 🔒 **Authentication**: User authentication is secured using Clerk.
-- 🗄️ **Database Management**: MySQL managed with Prisma ORM.
-- ☁️ **File Storage**: Integrated with Firebase Storage for seamless file handling.
-- ⚡ **Performance Optimization**: Achieved 100% performance and SEO optimization.
+## 🏗️ System Architecture
 
-## 🛠️ Technologies Used
+Neuxia operates as a central gateway between users and various AI providers:
 
-- **Next.js**: For server-side rendering and performance optimizations.
-- **React**: For building responsive user interfaces.
-- **TypeScript**: For type safety and better development experience.
-- **Clerk**: For secure user authentication.
-- **MySQL & Prisma**: For efficient database management.
-- **Firebase Storage**: For secure and scalable file storage.
-- **Vercel**: For deploying the platform with high scalability.
+1.  **Unified Interface**: A single chat component capable of rendering Markdown, Code Blocks (with syntax highlighting), Images, and Audio players dynamically.
+2.  **Credit Ledger System**: Middleware intercepts requests to verify user credit balance before hitting expensive AI APIs.
+3.  **Model Aggregation**:
+    * **Google Gemini**: For natural language processing and code generation.
+    * **Replicate**: For high-fidelity image, video, and music generation.
+    * **ElevenLabs**: For neural text-to-speech synthesis.
 
-## 🚀 Installation
+## ✨ Key Features
 
-1. Clone the repository:
-   ```bash
-    git clone https://github.com/moazelgandy2/neuxia-ai.git
-   ```
-2. Install dependencies
+### 🧠 The AI Suite
+* **💬 Conversational AI**: Context-aware chat with memory (powered by Gemini).
+* **👨‍💻 Intelligent Code Gen**: Generates, formats, and explains code snippets in real-time.
+* **🎨 Image & Video Generation**: Prompt-to-Image/Video using Replicate's diffusion models.
+* **🗣️ Neural Text-to-Speech**: Converts written text into lifelike audio using ElevenLabs.
 
-   ```bash
+### 💼 The SaaS Core
+* **💳 Credit-Based Economy**: Granular consumption model (e.g., 1 image = 5 credits).
+* **🔄 Subscription Tiers**: Monthly subscriptions handled via Stripe Checkout.
+* **⚡ Webhook Handling**: Secure Stripe webhook listeners to automate credit top-ups and subscription renewals.
+* **🔒 Enterprise-Grade Auth**: Powered by Clerk for seamless sign-up, session management, and user security.
+
+## 🛠️ Technology Stack
+
+* **Frontend**: Next.js 14 (App Router), React, TailwindCSS, Shadcn UI, Lucide Icons.
+* **Backend**: Next.js Server Actions, Prisma ORM.
+* **Database**: MySQL (PlanetScale/Aiven) for relational data.
+* **State & Storage**: Firebase Storage (for generated assets), Zustand (Client state).
+* **AI Providers**: OpenAI SDK (Generic Interface), Replicate SDK, Google Generative AI.
+* **Payments**: Stripe SDK + Webhooks.
+
+## 🚀 Installation & Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/moazelgandy2/neuxia-ai.git](https://github.com/moazelgandy2/neuxia-ai.git)
+    cd neuxia-ai
+    ```
+
+2.  **Install dependencies:**
+    ```bash
     npm install
-    or
+    # or
     yarn install
-   ```
+    ```
 
-3. Set up your environment variables by renaming the `.env.example` file to `.env`:
+3.  **Environment Setup:**
+    Rename `.env.example` to `.env` and fill in the keys.
 
-   ```bash
-   mv .env.example .env
-   ```
+    <details>
+    <summary>Click to view required Environment Variables</summary>
 
-4. Run the development server
+    | Variable Name | Description |
+    | :--- | :--- |
+    | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk Public Key |
+    | `CLERK_SECRET_KEY` | Clerk Secret Key |
+    | `GEMINI_API_KEY` | Google Gemini API Key |
+    | `REPLICATE_API_KEY` | Replicate AI API Key |
+    | `ELEVEN_LABS_API_KEY` | ElevenLabs API Key |
+    | `DATABASE_URL` | MySQL Connection String |
+    | `STRIPE_API_KEY` | Stripe Secret Key |
+    | `STRIPE_WEBHOOK_SECRET` | Stripe CLI/Live Webhook Secret |
+    | `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` or production URL |
 
-   ```bash
-     npm run dev
-     OR
-     yarn run dev
-   ```
+    </details>
 
-## 🚀 Usage
+4.  **Database Push:**
+    ```bash
+    npx prisma db push
+    ```
 
-Once the development server is running, you can access the app at `http://localhost:3000`. Explore the various features, including AI-powered interactions, code generation, and image creation.
+5.  **Run Development Server:**
+    ```bash
+    npm run dev
+    ```
 
-## ⚙️ Environment Variables
+## 📸 Usage & Screenshots
 
-| Variable Name                         | Description                                 |
-| ------------------------------------- | ------------------------------------------- |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`   | Clerk publishable API key for public use    |
-| `CLERK_SECRET_KEY`                    | Clerk secret key for server-side operations |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL`       | URL for the sign-in page                    |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL`       | URL for the sign-up page                    |
-| `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | Redirect URL after successful sign-in       |
-| `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | Redirect URL after successful sign-up       |
-| `GEMINI_API_KEY`                      | API key for the Gemini service              |
-| `REPLICATE_API_KEY`                   | API key for the Replicate service           |
-| `ELEVEN_LABS_API_KEY`                 | API key for Eleven Labs (text-to-speech)    |
-| `DATABASE_URL`                        | URL for connecting to the database          |
-| `STRIP_API_SECRET_KEY`                | Stripe secret key for handling payments     |
-| `NEXT_PUBLIC_APP_URL`                 | Publicly accessible URL of the application  |
-| `STRIPE_WEBHOOK_SECRET`               | Secret key for verifying Stripe webhooks    |
-| `FIREBASE_API_KEY`                    | Firebase API key                            |
-| `FIREBASE_AUTH_DOMAIN`                | Firebase authentication domain              |
-| `FIREBASE_PROJECT_ID`                 | Firebase project ID                         |
-| `FIREBASE_STORAGE_BUCKET`             | Firebase storage bucket for file handling   |
-| `FIREBASE_MESSAGING_SENDER_ID`        | Firebase messaging sender ID                |
-| `FIREBASE_APP_ID`                     | Firebase app ID                             |
-| `FIREBASE_MEASUREMENT_ID`             | Firebase measurement ID for analytics       |
+Once running at `http://localhost:3000`:
+1.  **Navigate to Dashboard**: View your credit balance and recent generations.
+2.  **Select a Tool**: Choose between Conversation, Code, Image, Video, or Music.
+3.  **Manage Subscription**: Click "Manage Subscription" to open the Stripe Portal.
+
+---
+
+**Author**: Moaz El Gandy
+*Built to demonstrate complex API orchestration and SaaS architecture.*
