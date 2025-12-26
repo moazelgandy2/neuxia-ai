@@ -9,7 +9,7 @@ Unlike simple API wrappers, Neuxia implements a secure gateway pattern to handle
 
 Neuxia operates as a central gateway between users and various AI providers:
 
-1.  **Unified Interface**: A single chat component capable of rendering Markdown, Code Blocks (with syntax highlighting), Images, and Audio players dynamically.
+1.  **Unified Interface**: A single app that is capable of rendering Markdown, Code Blocks (with syntax highlighting), Images, and Audio players dynamically.
 2.  **Credit Ledger System**: Middleware intercepts requests to verify user credit balance before hitting expensive AI APIs.
 3.  **Model Aggregation**:
     * **Google Gemini**: For natural language processing and code generation.
