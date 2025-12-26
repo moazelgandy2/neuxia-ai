@@ -1,6 +1,7 @@
 # 🚀 Neuxia - Multi-Modal AI Gateway & SaaS Platform
 
-![Neuxia Banner](public/logo.png) **Neuxia** is a comprehensive AI SaaS platform that unifies multiple generative models (Gemini, Replicate, ElevenLabs) into a single interface. Built with **Next.js 16**, it features a robust **credit-based economy**, tiered subscriptions via **Stripe**, and a fully responsive, optimized UI.
+![Neuxia Banner](public/logo.png) 
+**Neuxia** is a comprehensive AI SaaS platform that unifies multiple generative models (Gemini, Replicate, ElevenLabs) into a single interface. Built with **Next.js**, it features a robust **credit-based economy**, tiered subscriptions via **Stripe**, and a fully responsive, optimized UI.
 
 Unlike simple API wrappers, Neuxia implements a secure gateway pattern to handle rate limiting, credit deduction (atomic transactions), and multi-provider orchestration.
 
